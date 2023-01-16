@@ -23,7 +23,7 @@ public class UserDTO {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -31,7 +31,7 @@ public class UserDTO {
         return name;
     }
 
-    public void setName(final String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -39,7 +39,7 @@ public class UserDTO {
         return surname;
     }
 
-    public void setSurname(final String surname) {
+    public void setSurname(String surname) {
         this.surname = surname;
     }
 
@@ -47,7 +47,7 @@ public class UserDTO {
         return mail;
     }
 
-    public void setMail(final String mail) {
+    public void setMail(String mail) {
         this.mail = mail;
     }
 
@@ -55,7 +55,7 @@ public class UserDTO {
         return address;
     }
 
-    public void setAddress(final String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 

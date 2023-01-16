@@ -10,7 +10,7 @@ public class ErrorResponse {
         return httpStatus;
     }
 
-    public void setHttpStatus(final Integer httpStatus) {
+    public void setHttpStatus(Integer httpStatus) {
         this.httpStatus = httpStatus;
     }
 
@@ -18,7 +18,7 @@ public class ErrorResponse {
         return exception;
     }
 
-    public void setException(final String exception) {
+    public void setException(String exception) {
         this.exception = exception;
     }
 
@@ -26,7 +26,7 @@ public class ErrorResponse {
         return message;
     }
 
-    public void setMessage(final String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 

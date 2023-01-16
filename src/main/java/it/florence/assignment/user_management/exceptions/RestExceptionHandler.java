@@ -5,35 +5,34 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.server.ResponseStatusException;
 
 
 @RestControllerAdvice(annotations = RestController.class)
 public class RestExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFound(final NotFoundException exception) {
-        final ErrorResponse errorResponse = new ErrorResponse();
+    public ResponseEntity<ErrorResponse> handleNotFound(NotFoundException exception) {
+        ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setHttpStatus(HttpStatus.NOT_FOUND.value());
         errorResponse.setException(exception.getClass().getSimpleName());
         errorResponse.setMessage(exception.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(ResponseStatusException.class)
+    @ExceptionHandler(CSVParsingException.class)
     public ResponseEntity<ErrorResponse> handleResponseStatus(
-            final ResponseStatusException exception) {
-        final ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setHttpStatus(exception.getStatusCode().value());
+            CSVParsingException exception) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         errorResponse.setException(exception.getClass().getSimpleName());
         errorResponse.setMessage(exception.getMessage());
-        return new ResponseEntity<>(errorResponse, exception.getStatusCode());
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(Throwable.class)
-    public ResponseEntity<ErrorResponse> handleThrowable(final Throwable exception) {
+    public ResponseEntity<ErrorResponse> handleThrowable(Throwable exception) {
         exception.printStackTrace();
-        final ErrorResponse errorResponse = new ErrorResponse();
+        ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         errorResponse.setException(exception.getClass().getSimpleName());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);

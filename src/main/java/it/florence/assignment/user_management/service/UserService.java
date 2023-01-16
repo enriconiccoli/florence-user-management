@@ -1,15 +1,19 @@
 package it.florence.assignment.user_management.service;
 
 import it.florence.assignment.user_management.entities.User;
+import it.florence.assignment.user_management.exceptions.CSVParsingException;
+import it.florence.assignment.user_management.exceptions.NotFoundException;
 import it.florence.assignment.user_management.model.UserDTO;
 import it.florence.assignment.user_management.repository.UserRepository;
-import it.florence.assignment.user_management.exceptions.NotFoundException;
-
-import java.util.Collections;
-import java.util.List;
-
+import it.florence.assignment.user_management.utils.CSVHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 @Service
@@ -52,6 +56,28 @@ public class UserService {
         return userRepository.save(user).getId();
     }
 
+    public void saveFromCSV(MultipartFile file) {
+        try {
+            List<UserDTO> userDTOList = CSVHelper.csvToUserDTO(file.getInputStream());
+
+            List<User> userList = new ArrayList<>();
+            for (UserDTO userDTO : userDTOList) {
+
+                if(userDTO.getId() != null){
+                    userRepository.findById(userDTO.getId()).ifPresent(user -> userList.add(mapToEntity(userDTO, user)));
+                }
+                else{
+                    userList.add(mapToEntity(userDTO, new User()));
+                }
+
+            }
+
+            userRepository.saveAll(userList);
+        } catch (IOException e) {
+            throw new CSVParsingException("Fail to read input file: " + e.getMessage());
+        }
+    }
+
     public void update(Long id, UserDTO userDTO) {
         final User user = userRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
@@ -61,6 +87,11 @@ public class UserService {
 
     public void delete(Long id) {
         userRepository.deleteById(id);
+    }
+
+    //TODO: RIMUOVERE!
+    public void deleteAll() {
+        userRepository.deleteAll();
     }
 
     private UserDTO mapToDTO(User user, UserDTO userDTO) {
@@ -73,6 +104,7 @@ public class UserService {
     }
 
     private User mapToEntity(UserDTO userDTO, User user) {
+
         user.setName(userDTO.getName());
         user.setSurname(userDTO.getSurname());
         user.setMail(userDTO.getMail());
