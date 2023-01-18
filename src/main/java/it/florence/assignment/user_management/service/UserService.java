@@ -89,7 +89,6 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    //TODO: RIMUOVERE!
     public void deleteAll() {
         userRepository.deleteAll();
     }
