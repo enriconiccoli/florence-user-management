@@ -50,10 +50,14 @@ public class CSVHelper {
             userDTO.setId(null);
         }
 
-        userDTO.setName(csvRecord.get("name"));
-        userDTO.setSurname(csvRecord.get("surname"));
-        userDTO.setMail(csvRecord.get("mail"));
-        userDTO.setAddress(csvRecord.get("address"));
+        try {
+            userDTO.setName(csvRecord.get("name"));
+            userDTO.setSurname(csvRecord.get("surname"));
+            userDTO.setMail(csvRecord.get("mail"));
+            userDTO.setAddress(csvRecord.get("address"));
+        } catch (IllegalArgumentException e){
+            throw new CSVParsingException("Incorrect CSV file: " + e.getMessage());
+        }
 
         return userDTO;
     }
