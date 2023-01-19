@@ -44,13 +44,13 @@ public class CSVHelper {
         UserDTO userDTO = new UserDTO();
 
         try {
-            userDTO.setId(Long.valueOf(csvRecord.get("id")));
-        }
-        catch (IllegalArgumentException e){
-            userDTO.setId(null);
-        }
 
-        try {
+            try {
+                userDTO.setId(Long.valueOf(csvRecord.get("id")));
+            } catch (NumberFormatException e){
+                userDTO.setId(null);
+            }
+
             userDTO.setName(csvRecord.get("name"));
             userDTO.setSurname(csvRecord.get("surname"));
             userDTO.setMail(csvRecord.get("mail"));
