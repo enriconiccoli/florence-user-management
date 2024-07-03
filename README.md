@@ -1,13 +1,16 @@
 # User Management
 
 ### Short description
-This project exposes a series of endpoints through a Spring Boot application to manipulate an User entity, composed by id, name, surname, address and mail, and stored into a PostgreSQL.
+This project exposes a series of endpoints through a Quarkus application to manipulate an User entity, composed by id, name, surname, address and mail, and stored into a PostgreSQL.
+
+### Branches
+This project is composed of two different branches:
+- **main** contains the original implementation in Springboot
+- **feature/quarkusMigration** contains the migration to Quarkus
 
 ### Set up
-To compile and run this project is necessary to execute:
-- **mvn clean package** (creates the JAR file into Target package)
-- **cd docker**
-- **docker-compose up** (starts docker. Rebuild the image if necessary through --build)
+This project uses Quarkus Devservices to run a Postgres image, so the only necessary command to compile and run the project is
+- **./mvnw quarkus:dev** 
 
 ### API Features
 

@@ -1,11 +1,11 @@
-package it.florence.assignment.user_management.utils;
+package it.florence.assignment.utils;
 
-import it.florence.assignment.user_management.exceptions.CSVParsingException;
-import it.florence.assignment.user_management.model.UserDTO;
+import it.florence.assignment.model.UserDTO;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,12 +18,6 @@ public class CSVHelper {
 
     private CSVHelper(){}
 
-    public static final String TYPE = "text/csv";
-
-    public static boolean hasCSVFormat(MultipartFile file) {
-
-        return TYPE.equals(file.getContentType());
-    }
 
     public static List<UserDTO> csvToUserDTO(InputStream is) {
 
@@ -35,7 +29,7 @@ public class CSVHelper {
 
 
         } catch (IOException e) {
-            throw new CSVParsingException("Fail to parse CSV file: " + e.getMessage());
+            throw new WebApplicationException("Fail to parse CSV file: " + e.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -56,7 +50,7 @@ public class CSVHelper {
             userDTO.setMail(csvRecord.get("mail"));
             userDTO.setAddress(csvRecord.get("address"));
         } catch (IllegalArgumentException e){
-            throw new CSVParsingException("Incorrect CSV file: " + e.getMessage());
+            throw new WebApplicationException("Incorrect CSV file: " + e.getMessage(), Response.Status.BAD_REQUEST);
         }
 
         return userDTO;
