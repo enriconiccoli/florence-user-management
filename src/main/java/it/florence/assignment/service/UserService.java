@@ -19,14 +19,14 @@ import java.util.List;
 public class UserService {
 
 
-    public List<UserDTO> findAll() {
+    public List<UserDTO> getAllUsers() {
         final List<UserEntity> users = UserEntity.findAll().list();
         return users.stream()
                 .map(user -> mapToDTO(user, new UserDTO()))
                 .toList();
     }
 
-    public UserDTO get(Long id) {
+    public UserDTO getUser(Long id) {
 
         UserEntity user = UserEntity.findById(id);
 
@@ -37,7 +37,7 @@ public class UserService {
         throw new WebApplicationException("User not found", Response.Status.NOT_FOUND);
     }
 
-    public List<UserDTO> findByNameSurname(String name, String surname){
+    public List<UserDTO> findUsersByNameSurname(String name, String surname){
 
         if(StringUtil.isNullOrEmpty(surname) && StringUtil.isNullOrEmpty(name)){
             return Collections.emptyList();
@@ -50,7 +50,7 @@ public class UserService {
     }
 
     @Transactional
-    public void create(UserDTO userDTO) {
+    public void createUser(UserDTO userDTO) {
 
         final UserEntity user = mapToEntity(userDTO, new UserEntity());
         user.persist();
@@ -78,7 +78,7 @@ public class UserService {
     }
 
     @Transactional
-    public void update(Long id, UserDTO userDTO) {
+    public void updateUser(Long id, UserDTO userDTO) {
 
         UserEntity user = UserEntity.findById(id);
 
@@ -91,7 +91,7 @@ public class UserService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void deleteUser(Long id) {
         UserEntity.deleteById(id);
     }
 

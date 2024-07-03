@@ -20,29 +20,28 @@ public class UserController {
 
     @GET
     public Response getAllUsers() {
-        return Response.ok(userService.findAll()).build();
+        return Response.ok(userService.getAllUsers()).build();
     }
 
     @GET
     @Path("/{id}")
     public Response getUser(@PathParam("id") Long id) {
-        return Response.ok(userService.get(id)).build();
+        return Response.ok(userService.getUser(id)).build();
     }
 
     @GET
     @Path("/getByName")
     public Response findUsersByNameSurname(@QueryParam(value = "name") @Valid String name,
                                                                 @QueryParam(value = "surname") @Valid String surname) {
-        return Response.ok(userService.findByNameSurname(name,surname)).build();
+        return Response.ok(userService.findUsersByNameSurname(name,surname)).build();
     }
 
     @POST
     public Response createUser(@Valid UserDTO userDTO) {
-        userService.create(userDTO);
+        userService.createUser(userDTO);
         return Response.status(Response.Status.CREATED).build();
     }
 
-    //todo: TEST ME
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Path("/csv")
@@ -55,14 +54,14 @@ public class UserController {
     @PUT
     @Path("/{id}")
     public Response updateUser(@PathParam("id") Long id, @Valid UserDTO userDTO) {
-        userService.update(id, userDTO);
+        userService.updateUser(id, userDTO);
         return Response.ok().build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteUser(@PathParam("id") Long id) {
-        userService.delete(id);
+        userService.deleteUser(id);
         return Response.noContent().build();
     }
 
